@@ -81,8 +81,10 @@ namespace TheTCPGaneClient
             byte[][] field = new byte[3][];
             bool bFieldDraw = false;
             int messageLength = 0;
+
             for (int i = 0; i < field.Length; ++i)
                 field[i] = new byte[3];
+
             for (int i = 0; i < field.Length; ++i) 
             {
                 for (int j = 0; j < field[i].Length; ++j) 
