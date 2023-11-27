@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32630.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpGameServer", "TcpGameServer.csproj", "{AF21FEA7-56C5-4C33-AE0C-2CA02F8DFC74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheTCPGaneClient", "..\TheTCPGaneClient\TheTCPGaneClient.csproj", "{86706187-5F5E-4292-B5F5-FFE547E8D873}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllCommands", "..\AllCommands\AllCommands.csproj", "{D8F1E07E-20D3-458E-B0AB-2FD41069ACC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{86706187-5F5E-4292-B5F5-FFE547E8D873}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86706187-5F5E-4292-B5F5-FFE547E8D873}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86706187-5F5E-4292-B5F5-FFE547E8D873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F1E07E-20D3-458E-B0AB-2FD41069ACC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F1E07E-20D3-458E-B0AB-2FD41069ACC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F1E07E-20D3-458E-B0AB-2FD41069ACC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F1E07E-20D3-458E-B0AB-2FD41069ACC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

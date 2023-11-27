@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AllCommands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -65,9 +66,7 @@ namespace TcpGameServer
             lock (_lockForList)
             {
                 DecPlayerCount();
-                Console.WriteLine("Count before removeAll " + _clientsMeta.Count);
                 _clientsMeta.RemoveAll((ClientMetaInfo cmi) => { if (cmi == null) return true; if (cmi.ClientSocket == null) return true; return !cmi.ClientSocket.Connected; });
-                Console.WriteLine("Count after removeAll " + _clientsMeta.Count);
                 _stage = EServerStages.WaitingForConnection;
                 foreach (var client in _clientsMeta)
                 {
@@ -76,7 +75,7 @@ namespace TcpGameServer
                     client.IsReadyForGame = false;
                     try
                     {
-                        client.ClientSocket.Send(new byte[] { 0x11 });
+                        client.ClientSocket.Send(new byte[] { CMD_AllCommands.kCMD_YouAreFirstPlayer });
                     }
                     catch
                     {
@@ -125,7 +124,7 @@ namespace TcpGameServer
                                     // pass
                                     if (!clientMeta.IsConnected)
                                     {
-                                        sock.Send(new byte[] { (byte)(0x11 + clientMeta.Number) });
+                                        sock.Send(new byte[] { (byte)(CMD_AllCommands.kCMD_YouAreFirstPlayer + clientMeta.Number) });
                                         clientMeta.IsConnected = true;
                                     }
                                     else
@@ -137,11 +136,11 @@ namespace TcpGameServer
                                 case EServerStages.WaitingForReadyForGame:
                                     if (!clientMeta.IsReadyForGame)
                                     {
-                                        sock.Send(new byte[] { 0x21 }); // are you ready
+                                        sock.Send(new byte[] { CMD_AllCommands.kCMD_AreYouReady }); // are you ready
                                         int receiveCount = sock.Receive(message);
                                         if (receiveCount != 0)
                                         {
-                                            if (message[0] == 0x21)
+                                            if (message[0] == CMD_AllCommands.kCMD_IAmReady)
                                             {
                                                 lock (_lockForList)
                                                 {
@@ -161,12 +160,12 @@ namespace TcpGameServer
                                     if (_game.CurPlayerNumber() == clientMeta.Number) // 0, 1
                                     {
                                         otherPlayerStep = true;
-                                        message[0] = 0x31;  // field
+                                        message[0] = CMD_AllCommands.kCMD_Field;  // field
                                         int messageLength = _game.WriteFieldInArray(message, 1);
                                         clientMeta.ClientSocket.Send(message, messageLength + 1, SocketFlags.None);
-                                        clientMeta.ClientSocket.Send(new byte[] { 0x34 });
+                                        clientMeta.ClientSocket.Send(new byte[] { CMD_AllCommands.kCMD_YourTurn /* 0x34 */ });
                                         clientMeta.ClientSocket.Receive(message);
-                                        if (message[0] == 0x33) 
+                                        if (message[0] == CMD_AllCommands.kCMD_MyTurn /* 0x33*/) 
                                         {
                                             try
                                             {
@@ -178,12 +177,12 @@ namespace TcpGameServer
                                             }
                                             if (_game.TheWinner() != -1) 
                                             {
-                                                clientMeta.ClientSocket.Send(new byte[] { 0x41, (byte)_game.TheWinner()});
+                                                clientMeta.ClientSocket.Send(new byte[] { CMD_AllCommands.kCMD_TheWinnerIs, (byte)_game.TheWinner()});
                                                 foreach (var cmi in _clientsMeta) 
                                                 {
                                                     try
                                                     {
-                                                        cmi.ClientSocket.Send(new byte[] { 0x41, (byte)_game.TheWinner() });
+                                                        cmi.ClientSocket.Send(new byte[] { CMD_AllCommands.kCMD_TheWinnerIs, (byte)_game.TheWinner() });
                                                         cmi.IsReadyForGame = false;
                                                     }
                                                     finally 
@@ -197,7 +196,7 @@ namespace TcpGameServer
                                     else 
                                     {
                                         if (otherPlayerStep)
-                                            clientMeta.ClientSocket.Send(new byte[] { 0x33, (byte)_game.CurPlayerNumber() });
+                                            clientMeta.ClientSocket.Send(new byte[] { CMD_AllCommands.kCMD_PlayerNIsGoingNow /* 0x33 */, (byte)_game.CurPlayerNumber() });
                                         otherPlayerStep = false;
                                     }
                                     break;

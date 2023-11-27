@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using AllCommands;
 
 namespace TheTCPGaneClient
 {
@@ -132,11 +133,11 @@ namespace TheTCPGaneClient
 
                                     if (int.Parse(Console.ReadLine()) == 1)
                                     {
-                                        sock.Send(new byte[] { 0x21 });
+                                        sock.Send(new byte[] { CMD_AllCommands.kCMD_IAmReady /*0x21*/ });
                                     }
                                     else
                                     {
-                                        sock.Send(new byte[] { 0x22 });
+                                        sock.Send(new byte[] { CMD_AllCommands.kCMD_IAmNotReady /*0x22*/ });
                                     }
                                     break;
                                 default:
@@ -155,11 +156,11 @@ namespace TheTCPGaneClient
                                 case 2:
                                     if (bFieldDraw)
                                     {
-                                        sock.Send(new byte[] { 0x31 });
+                                        sock.Send(new byte[] { CMD_AllCommands.kCMD_IHaveBeenDrawnField /*0x31*/ });
                                     }
                                     else
                                     {
-                                        sock.Send(new byte[] { 0x32 });
+                                        sock.Send(new byte[] { CMD_AllCommands.kCMD_IHaventBeenDrawnField /*0x32*/ });
                                     }
                                     break;
                                 case 3:
@@ -186,7 +187,7 @@ namespace TheTCPGaneClient
 
                                         }
                                     } while (row == -1 || col == -1);
-                                    sock.Send(new byte[] { 0x33, (byte)row, (byte)col });
+                                    sock.Send(new byte[] { CMD_AllCommands.kCMD_MyTurn, (byte)row, (byte)col });
                                     break;
                             }
                             break;

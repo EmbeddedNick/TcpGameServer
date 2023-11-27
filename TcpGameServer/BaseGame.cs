@@ -19,6 +19,12 @@ namespace TcpGameServer
             _isGameRunning = true;
             _theWinner = -1;
         }
+        protected abstract bool CheckWinner();
+        protected abstract void Action(object obj);
+        protected abstract void InitField();
+        protected abstract void ResetField();
+        public abstract int WriteFieldInArray(byte[] arr, int offset);
+
         public int TheWinner()
         {
             return _theWinner;
@@ -42,11 +48,6 @@ namespace TcpGameServer
                     CurPlayerStep();
             }
         }
-        protected abstract bool CheckWinner();
-        protected abstract void Action(object obj);
-        protected abstract void InitField();
-        protected abstract void ResetField();
-        public abstract int WriteFieldInArray(byte[] arr, int offset);
         private void ResetPlayers()
         {
             _curPlayerCount = 0;
