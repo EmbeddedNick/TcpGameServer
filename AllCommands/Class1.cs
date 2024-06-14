@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AllCommands
 {
-    public static class CMD_AllCommands
+    public  class CMD_AllCommands
     {
         // first stage
         public const byte kCMD_YouAreFirstPlayer = 0x11;
