@@ -1,0 +1,6 @@
+F:\TopCollege\TcpGameServer\AllCommands\obj\Release\AllCommands.csproj.CoreCompileInputs.cache
+F:\TopCollege\TcpGameServer\AllCommands\obj\Release\AllCommands.csproj.AssemblyReference.cache
+F:\TopCollege\TcpGameServer\AllCommands\bin\Release\AllCommands.dll
+F:\TopCollege\TcpGameServer\AllCommands\bin\Release\AllCommands.pdb
+F:\TopCollege\TcpGameServer\AllCommands\obj\Release\AllCommands.dll
+F:\TopCollege\TcpGameServer\AllCommands\obj\Release\AllCommands.pdb
