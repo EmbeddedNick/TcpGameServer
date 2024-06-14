@@ -30,12 +30,22 @@ namespace TheTCPGaneClient
         // fourth stage
         public const byte kCMD_TheWinnerIs = 0x41;
     }
+    enum EServerStages
+    {
+        InitStage,
+        WaitingForConnection,
+        WaitingForReadyForGame,
+        Game,
+        GameOver
+    }
+    public enum EPlayerType : byte
+    {
+        TIC = 0,
+        TAC = 1,
+        FREE_FRIENDSHIP = 13
+    }
     class Program
     {
-        static void ClientThread(object obj) 
-        {
-        
-        }
         static int GetCommand(byte b) 
         {
             return b & 0x0f;
@@ -60,23 +70,25 @@ namespace TheTCPGaneClient
         }
         static void DrawField(byte[][] field) 
         {
+            Console.WriteLine();
             for (int i = 0; i < field.Length; ++i)
             {
                 for (int j = 0; j < field[i].Length; ++j)
                 {
                     switch (field[i][j]) 
                     {
-                        case 13:
+                        case (byte)EPlayerType.FREE_FRIENDSHIP:
                             Console.Write("- ");
                             break;
-                        case 0:
+                        case (byte)EPlayerType.TIC:
                             Console.Write("x ");
                             break;
-                        case 1:
+                        case (byte)EPlayerType.TAC:
                             Console.Write("o ");
                             break;
                     }
                 }
+                Console.WriteLine();
                 Console.WriteLine();
             }
         }
@@ -112,7 +124,7 @@ namespace TheTCPGaneClient
             {
                 for (int j = 0; j < field[i].Length; ++j) 
                 {
-                    field[i][j] = 13;
+                    field[i][j] = (byte)EPlayerType.FREE_FRIENDSHIP;
                 }
             }
 
@@ -124,9 +136,9 @@ namespace TheTCPGaneClient
 
                     switch (GetStage(message[0]))
                     {
-                        case 0:
+                        case (byte)EServerStages.InitStage:
                             break;
-                        case 1: // first stage
+                        case (byte)EServerStages.WaitingForConnection: // first stage
                             switch (GetCommand(message[0]))
                             {
                                 case 1:
@@ -147,7 +159,7 @@ namespace TheTCPGaneClient
                                     Console.WriteLine("You are the second player (o) and we are ready for game");
                             }
                             break;
-                        case 2: // second stage
+                        case (byte)EServerStages.WaitingForReadyForGame: // second stage
                             switch (GetCommand(message[0]))
                             {
                                 case 1:
@@ -166,7 +178,7 @@ namespace TheTCPGaneClient
                                     break;
                             }
                             break;
-                        case 3:
+                        case (byte)EServerStages.Game: // third state
                             switch (GetCommand(message[0]))
                             {
                                 case 1: // field
@@ -214,11 +226,11 @@ namespace TheTCPGaneClient
                             }
                             break;
 
-                        case 4:
+                        case (byte)EServerStages.GameOver:
                             switch (GetCommand(message[0]))
                             {
                                 case 1:
-                                    if (message[1] == 13)
+                                    if (message[1] == (byte)EPlayerType.FREE_FRIENDSHIP)
                                         Console.WriteLine("The winner is friends");
                                     else if (message[1] == playerNumber)
                                         Console.WriteLine("You win!");
